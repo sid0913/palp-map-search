@@ -28,28 +28,21 @@
 </head>
 <body>
      
-     <div class="topnav">
-          <a class="active" href="#home">Home</a>
-          <a href="#about">About</a>
-          <a href="#contact">Contact</a>
-          <div>
-               <div class="chip text-3xl">
-                    Snake
-                    <span class="closebtn" onclick="this.parentElement.style.display='none'">&times;</span>
-               </div> 
-               <input class = "text-2xl" type="text" placeholder="Search.." id="search-bar">
-          </div>
 
-          
+     <div id="search-bar" tabindex="-1" class="flex my-3 mx-5 p-1 bg-blue-50 h-15 w-xl rounded-md focus-within:ring focus-within:ring-blue-500">
+          <span id="chips" class="my-auto flex"> 
+          </span>
+          <form id="search-form" class="flex-wrap my-auto" action="#">
+               <input id="search-input" placeholder="Search" class=" my-auto bg-transparent outline-none max-h-full max-w-full" type="text">
+          </form>
      </div>
 
-
-
+     
      <!--leaflet-->
 
 
      <!--map-->
-     <div id="map"></div>
+     <div  id="map"></div>
 
 </body>
 </html>
