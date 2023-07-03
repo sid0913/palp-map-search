@@ -2,7 +2,7 @@ window.onload = onLoad;
 
 //function to build chips
 function create_chip(chip_body){
-  return `<div class="rounded-full bg-blue-200 text-sm flex my-auto max-auto h-8 w-20  mx-2">
+  return `<div class="rounded-full bg-lime-200 text-sm flex my-auto max-auto h-8 w-20  mx-2">
   <span class="mx-auto my-auto">
        ${chip_body}
   </span>
