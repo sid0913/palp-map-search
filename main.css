@@ -1,4 +1,9 @@
-#map { height: 100%; }
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*the map styling*/
+#map { height: 100vh; }
 
 /* Add a black background color to the top navigation bar */
 .topnav {
