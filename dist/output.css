@@ -547,10 +547,6 @@ video {
   margin-bottom: auto;
 }
 
-.block {
-  display: block;
-}
-
 .flex {
   display: flex;
 }
@@ -561,6 +557,18 @@ video {
 
 .h-full {
   height: 100%;
+}
+
+.h-10 {
+  height: 2.5rem;
+}
+
+.h-14 {
+  height: 3.5rem;
+}
+
+.h-12 {
+  height: 3rem;
 }
 
 .max-h-full {
@@ -577,6 +585,10 @@ video {
 
 .flex-wrap {
   flex-wrap: wrap;
+}
+
+.overflow-x-auto {
+  overflow-x: auto;
 }
 
 .rounded-full {
@@ -601,20 +613,24 @@ video {
   background-color: transparent;
 }
 
+.p-1 {
+  padding: 0.25rem;
+}
+
 .p-3 {
   padding: 0.75rem;
 }
 
-.p-5 {
-  padding: 1.25rem;
+.p-0 {
+  padding: 0px;
 }
 
-.p-2 {
-  padding: 0.5rem;
+.text-center {
+  text-align: center;
 }
 
-.p-1 {
-  padding: 0.25rem;
+.text-justify {
+  text-align: justify;
 }
 
 .text-sm {
@@ -638,15 +654,14 @@ video {
   --tw-ring-color: rgb(203 213 225 / var(--tw-ring-opacity));
 }
 
-.blur {
-  --tw-blur: blur(8px);
-  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
-}
-
 /*the map styling*/
 
 #map {
   height: 100vh;
+}
+
+body{
+  background-color: #333;
 }
 
 ul {
@@ -680,7 +695,7 @@ li a:hover {
 .chip {
   display: inline-block;
   padding: 0 100px;
-  height: 50px;
+  height: 3vh;
   font-size: 16px;
   line-height: 50px;
   border-radius: 25px;
