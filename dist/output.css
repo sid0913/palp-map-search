@@ -571,8 +571,8 @@ video {
   width: 5rem;
 }
 
-.max-w-full {
-  max-width: 100%;
+.w-full {
+  width: 100%;
 }
 
 .flex-wrap {
@@ -599,6 +599,18 @@ video {
 
 .bg-transparent {
   background-color: transparent;
+}
+
+.p-3 {
+  padding: 0.75rem;
+}
+
+.p-5 {
+  padding: 1.25rem;
+}
+
+.p-2 {
+  padding: 0.5rem;
 }
 
 .p-1 {
@@ -667,7 +679,7 @@ li a:hover {
 
 .chip {
   display: inline-block;
-  padding: 0 25px;
+  padding: 0 100px;
   height: 50px;
   font-size: 16px;
   line-height: 50px;
@@ -715,4 +727,9 @@ li a:hover {
 .focus-within\:ring-lime-500:focus-within {
   --tw-ring-opacity: 1;
   --tw-ring-color: rgb(132 204 22 / var(--tw-ring-opacity));
+}
+
+.hover\:bg-blue-100:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(219 234 254 / var(--tw-bg-opacity));
 }

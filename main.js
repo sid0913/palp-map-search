@@ -1,14 +1,23 @@
 window.onload = onLoad;
 
+//tracks the number of chips since the window has been loaded
+let num_of_chips = 0;
+
 //function to build chips
 function create_chip(chip_body){
-  return `<div class="rounded-full bg-lime-200 text-sm flex my-auto max-auto h-8 w-20  mx-2">
+
+  //increase the number of chips
+
+  //render a chip and add a index number for the particular chip
+  return `<div class=" p-1 rounded-full bg-lime-200 text-sm flex my-auto max-auto h-8 w-20  mx-2">
   <span class="mx-auto my-auto">
        ${chip_body}
   </span>
   <span class="mx-auto my-auto closebtn" onclick="this.parentElement.style.display='none'">&times;</span>
 </div> `;
 }
+
+
 
 function search_bar(){
   const search_input = document.getElementById('search-input');
@@ -23,62 +32,6 @@ function search_bar(){
   chips.innerHTML+=(create_chip(new_value))
 
 
-  //add chips
-
-//   let input = document.querySelector(".chip-input");
-//   let chips = document.querySelector(".chips");
-  
-//   document.querySelector(".form-field")
-//      .addEventListener('click',() => {
-//         input.style.display = 'block';
-//         input.focus();
-//      });
-     
-//   input.addEventListener('blur',()=>{
-//     input.style.display = 'none';
-//   });
-  
-//   input.addEventListener('keypress', function(event){
-//      if(event.which === 13)
-//      {
-       
-        
-  
-//         chips.appendChild(function ()
-//         {
-//            let _chip = document.createElement('div');
-  
-//            _chip.classList.add('chip');
-//            _chip.addEventListener('click', chipClickHandler);
-  
-//            _chip.append(
-//               (function ()
-//               {
-//                  let _chip_text = document.createElement('span');
-//                  _chip_text.classList.add('chip--text');
-//                  _chip_text.innerHTML = input.value;
-  
-//                  return _chip_text;
-//               })(),
-//               (function ()
-//               {
-//                  let _chip_button = document.createElement('span');
-//                  _chip_button.classList.add('chip--button');
-//                  _chip_button.innerHTML = 'x';
-  
-//                  return _chip_button;
-//               })()
-//            );
-  
-//            return _chip;
-//         }());
-//         input.value = '';
-//      }
-//   });
-    
-//   function chipClickHandler(event){
-//      chips.removeChild(event.currentTarget);
-// }
 
 }
 
@@ -116,7 +69,9 @@ function onLoad(){
       }
 
         catch(err){
+          console.log("didn't receive response from the palp server")
           throw err;
+          
         }
 
         return res;
