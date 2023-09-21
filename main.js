@@ -4,19 +4,28 @@ window.onload = onLoad;
 let num_of_chips = 0;
 let map
 
-
-//get random color
+//get a random color for the chips and markings on the map
 function getRandomColor() {
   let letters = '0123456789ABCDEF';
   let color = '#';
   for (var i = 0; i < 6; i++) {
     color += letters[Math.floor(Math.random() * 16)];
   }
-  return color;
+
+  //all hues are included
+  const h = Math.floor(Math.random() * 360)
+
+  //80 to 100 range to avoid grays
+  const s = 80+ Math.floor(Math.random() * 20)
+
+  //0-50 to keep the color dark
+  const l = 0+ Math.floor(Math.random() * 50)
+
+  return `hsl(${h}, ${s}%, ${l}%)`;
 }
 
 //function to build chips
-function create_chip(chip_body){
+function create_chip(chip_body, chips_div){
   console.log(getRandomColor())
   const color = getRandomColor();
 
@@ -24,22 +33,47 @@ function create_chip(chip_body){
 
   //render the leaflet stuff
 
+  let found = false;
 
   let response = async function(){
-    let res = await getGeoJSON(chip_body);
-
-    if(res.ok){
-      
-    }
+    let res
+    arr = await getGeoJSON(chip_body);
+    res = arr[0]
+    found = arr[1]
+    console.log(res)
+    console.log(`first ${found}`)
     
-    addGeoJsons(res, color)
-    console.log("here");
+    if(found){
+      addGeoJsons(res, color)
+    }
+
+
+    //if found render it into the chips div
+  //   if (found){
+  //     //render a chip and add a index number for the particular chip
+  //     chips.innerHTML+=`<div style="background-color:${color}" class=" p-1 rounded-full text-sm flex my-auto max-auto h-8 w-20  mx-2 text-white">
+  //   <span class="mx-auto my-auto text-white">
+  //        ${chip_body}
+  //   </span>
+  //   <span class="mx-auto my-auto closebtn" onclick="this.parentElement.style.display='none'">&times;</span>
+  // </div> `;
+  //   }
+  
+  //if not found remove the chip that has been added- it must have already been added by now since this function is async
+  if (!found){
+    console.log("not found here")
+
+    //not working to remove the chip that was not found
+    chips_div.removeChild(chips_div.lastChild);
+    console.log(chips_div.lastChild)
+  }
+  
+    return "";
 
   }();
 
-  //render a chip and add a index number for the particular chip
-  return `<div style="background-color:${color}" class=" p-1 rounded-full text-sm flex my-auto max-auto h-8 w-20  mx-2">
-  <span class="mx-auto my-auto">
+  return `<div style="background-color:${color}" class=" p-1 rounded-full text-sm flex my-auto max-auto h-8 w-20  mx-2 text-white text-center">
+  <span class="mx-auto my-auto text-white text-center">
        ${chip_body}
   </span>
   <span class="mx-auto my-auto closebtn" onclick="this.parentElement.style.display='none'">&times;</span>
@@ -61,7 +95,8 @@ function search_bar(){
   search_input.value = "";
 
   const chips = document.getElementById('chips');
-  chips.innerHTML+=(create_chip(new_value))
+  // create_chip(new_value, chips)
+  chips.innerHTML+=create_chip((new_value), chips)
 
 
 
@@ -79,53 +114,37 @@ function onLoad(){
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
 
-    let response = async function(){
-        let res = await getGeoJSON("snake");
-        // let gj =res.features[1].geometry;
-        // console.log(gj);
-
-        // try{
-
-        //   let myLayer = L.geoJSON().addTo(map);
-        //   myLayer.addData(gj);
-        // }
+    // let response = async function(){
+    //     let res = await getGeoJSON("snake");
 
 
 
-        try{
-        let list_of_geo_jsons = res.features;
-        let myStyle = {
-          "color": "#ff7800",
-          "weight": 5,
-          "opacity": 0.85
-      };
-      //works
-        // list_of_geo_jsons.forEach(element => {
-        //   let myLayer = L.geoJSON().addTo(map);
-        //   myLayer.addData(element.geometry);
-        // });
 
-        //works with colors
-        list_of_geo_jsons.forEach(element => {
-          let myLayer = L.geoJSON(element.geometry, {style:myStyle}).addTo(map);
-          // myLayer.addData(element.geometry);
-        });
+    //     try{
+    //     let list_of_geo_jsons = res.features;
+    //     let myStyle = {
+    //       "color": "#ff7800",
+    //       "weight": 5,
+    //       "opacity": 0.85
+    //   };
+
+
+    //     //works with colors
+    //     list_of_geo_jsons.forEach(element => {
+    //       let myLayer = L.geoJSON(element.geometry, {style:myStyle}).addTo(map);
+    //     });
         
-        //didn't add color but no errors
-        // list_of_geo_jsons.forEach(element => {
-        //   let myLayer = L.geoJSON().addTo(map);
-        //   myLayer.addData(element.geometry, {style:myStyle});
-        // });
-      }
 
-        catch(err){
-          console.log("didn't receive response from the palp server")
-          throw err;
+    //   }
+
+    //     catch(err){
+    //       console.log("didn't receive response from the palp server")
+    //       throw err;
           
-        }
+    //     }
 
-        return res;
-    }();
+    //     return res;
+    // }();
 
 
 }
@@ -149,7 +168,6 @@ function addGeoJsons(api_response, color){
 
   list_of_geo_jsons.forEach(element => {
   L.geoJSON(element.geometry, {style:geoJsonStyle}).addTo(map);
-    // myLayer.addData(element.geometry);
   });
 }
 
@@ -157,22 +175,49 @@ function addGeoJsons(api_response, color){
 
 async function getGeoJSON(item){
     let geo_json;
+    //whether the endpoint was found
+    let found = false;
 
     //fetch the api response
-    try {
+  
         // const response = await fetch("http://palp.art/api/geojson/snake", { headers: {'Content-Type':'application/json','Access-Control-Request-Method':'GET', 'Access-Control-Request-Headers': 'Content-Type, Authorization'}});
         const response = await fetch(`http://palp.art/api/geojson/${item}`);
 
+        console.log(response)
         if (!response.ok) {
+          console.log("url not found")
           throw new Error("Network response was not OK");
         }
         else{
-          geo_json = response.json();
+          
+
+          try{
+            //get text from the response
+            text = await response.text()
+
+            //if text is empty aka the item doesn't exist in the palp api then show an alert saying that it doesn't exist
+            if(text === ""){
+              alert("searched item doesn't exist")
+            }
+            else{
+              // geo_json = response.json();
+
+              //get the geojson
+              geo_json = JSON.parse(text)
+
+              found = true;
+
+            }
+
+          }
+          catch(err){
+            console.log("Error while retrieving the geojson")
+          }
+
+
 
         }
-      } catch (error) {
-        console.error("Error:", error);
-      }
 
-    return geo_json;
+
+    return [geo_json, found];
 }
