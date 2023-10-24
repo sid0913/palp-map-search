@@ -26,7 +26,7 @@ function getRandomColor() {
 
 //function to build chips
 function create_chip(chip_body, chips_div){
-  console.log(getRandomColor())
+
   //get a color for the chip
   const color = getRandomColor();
 
@@ -38,51 +38,43 @@ function create_chip(chip_body, chips_div){
 
   let response = async function(){
     let res
-    arr = await getGeoJSON(chip_body);
+    arr = getGeoJSON(chip_body);
+
+    arr.then((arr)=>{
     
     //get geojson retrieval details
     res = arr[0]
     found = arr[1]
 
-    console.log(res)
-    console.log(`first ${found}`)
-
     //if found get the geojsons
     if(found){
       addGeoJsons(res, color)
+
+      //add chip
+      chips_div.innerHTML+=`<div style="background-color:${color}" class=" p-1 rounded-full text-sm flex my-auto max-auto h-8 w-20  mx-2 text-white text-center">
+          <span class="mx-auto my-auto text-white text-center">
+              ${chip_body}
+          </span>
+          <span class="mx-auto my-auto closebtn" onclick="this.parentElement.style.display='none'">&times;</span>
+        </div> `;
     }
 
 
-    //if found render it into the chips div
-  //   if (found){
-  //     //render a chip and add a index number for the particular chip
-  //     chips.innerHTML+=`<div style="background-color:${color}" class=" p-1 rounded-full text-sm flex my-auto max-auto h-8 w-20  mx-2 text-white">
-  //   <span class="mx-auto my-auto text-white">
-  //        ${chip_body}
-  //   </span>
-  //   <span class="mx-auto my-auto closebtn" onclick="this.parentElement.style.display='none'">&times;</span>
-  // </div> `;
-  //   }
   
   //if not found remove the chip that has been added- it must have already been added by now since this function is async
     if (!found){
       console.log("not found here")
-
-      //not working to remove the chip that was not found
-      chips_div.removeChild(chips_div.lastChild);
-      console.log(chips_div.lastChild)
     }
+
+      //add an empty chip
+      chips_div.innerHTML+= "";
+    });
     
-      return "";
+    
 
   }();
 
-  return `<div style="background-color:${color}" class=" p-1 rounded-full text-sm flex my-auto max-auto h-8 w-20  mx-2 text-white text-center">
-  <span class="mx-auto my-auto text-white text-center">
-       ${chip_body}
-  </span>
-  <span class="mx-auto my-auto closebtn" onclick="this.parentElement.style.display='none'">&times;</span>
-</div> `;
+
 
 
 
@@ -91,6 +83,8 @@ function create_chip(chip_body, chips_div){
 
 
 function search_bar(){
+  
+  //get the searched value
   const search_input = document.getElementById('search-input');
   const new_value = search_input.value;
 
@@ -99,9 +93,12 @@ function search_bar(){
   //delete the 
   search_input.value = "";
 
-  const chips = document.getElementById('chips');
-  // create_chip(new_value, chips)
-  chips.innerHTML+=create_chip((new_value), chips)
+  //get the div with all the chips
+  const chips_div = document.getElementById('chips-div');
+
+  //create chips
+  create_chip(new_value, chips_div)
+
 
 
 
