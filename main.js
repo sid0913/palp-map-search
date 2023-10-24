@@ -48,7 +48,7 @@ function create_chip(chip_body, chips_div){
 
     //if found get the geojsons
     if(found){
-      addGeoJsons(res, color)
+      addGeoJsons(res, color, chip_body)
 
       //add chip
       chips_div.innerHTML+=`<div style="background-color:${color}" class=" p-1 rounded-full text-sm flex my-auto max-auto h-8 w-20  mx-2 text-white text-center">
@@ -88,6 +88,7 @@ function search_bar(){
   const search_input = document.getElementById('search-input');
   const new_value = search_input.value;
 
+  
 
 
   //delete the 
@@ -151,7 +152,7 @@ function onLoad(){
 
 }
 
-function addGeoJsons(api_response, color){
+function addGeoJsons(api_response, color, chip_name){
   let list_of_geo_jsons;
   if(api_response.features){
     list_of_geo_jsons = api_response.features;
@@ -161,15 +162,29 @@ function addGeoJsons(api_response, color){
   else{
     list_of_geo_jsons = [api_response]
   }
-        let geoJsonStyle = {
-          "color": color,
-          "weight": 5,
-          "opacity": 0.85
-      };
+
+  let geoJsonStyle = {
+      "color": color,
+      "weight": 5,
+      "opacity": 0.85
+  };
+
+
 
 
   list_of_geo_jsons.forEach(element => {
-  L.geoJSON(element.geometry, {style:geoJsonStyle}).addTo(map);
+    //use this for deletion
+    //this is where you add a unique id per chip- not just the chip name but also a random-number after it, assign this as the id of the chip too
+      element['properties']['chip_id'] = chip_name
+
+  });
+
+  //structure of list_of_geo_jsons is [element {features:, properties:, geometry:}]
+
+
+  list_of_geo_jsons.forEach(element => {
+  const polygon = L.geoJSON(element.geometry, {style:geoJsonStyle} ).addTo(map);
+  polygon.bindPopup(`<b>${chip_name}</b><iframe src="http://palp.art/browse/${chip_name}">`);
   });
 }
 
