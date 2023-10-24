@@ -27,6 +27,7 @@ function getRandomColor() {
 //function to build chips
 function create_chip(chip_body, chips_div){
   console.log(getRandomColor())
+  //get a color for the chip
   const color = getRandomColor();
 
   //increase the number of chips
@@ -38,11 +39,15 @@ function create_chip(chip_body, chips_div){
   let response = async function(){
     let res
     arr = await getGeoJSON(chip_body);
+    
+    //get geojson retrieval details
     res = arr[0]
     found = arr[1]
+
     console.log(res)
     console.log(`first ${found}`)
-    
+
+    //if found get the geojsons
     if(found){
       addGeoJsons(res, color)
     }
@@ -60,15 +65,15 @@ function create_chip(chip_body, chips_div){
   //   }
   
   //if not found remove the chip that has been added- it must have already been added by now since this function is async
-  if (!found){
-    console.log("not found here")
+    if (!found){
+      console.log("not found here")
 
-    //not working to remove the chip that was not found
-    chips_div.removeChild(chips_div.lastChild);
-    console.log(chips_div.lastChild)
-  }
-  
-    return "";
+      //not working to remove the chip that was not found
+      chips_div.removeChild(chips_div.lastChild);
+      console.log(chips_div.lastChild)
+    }
+    
+      return "";
 
   }();
 
